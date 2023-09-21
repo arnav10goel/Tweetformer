@@ -1,0 +1,265 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 750px;
+                 background-color: #222222;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+             #loadingBar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width: 100%;
+                 height: 750px;
+                 background-color:rgba(200,200,200,0.8);
+                 -webkit-transition: all 0.5s ease;
+                 -moz-transition: all 0.5s ease;
+                 -ms-transition: all 0.5s ease;
+                 -o-transition: all 0.5s ease;
+                 transition: all 0.5s ease;
+                 opacity:1;
+             }
+
+             #bar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width:20px;
+                 height:20px;
+                 margin:auto auto auto auto;
+                 border-radius:11px;
+                 border:2px solid rgba(30,30,30,0.05);
+                 background: rgb(0, 173, 246); /* Old browsers */
+                 box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+             }
+
+             #border {
+                 position:absolute;
+                 top:10px;
+                 left:10px;
+                 width:500px;
+                 height:23px;
+                 margin:auto auto auto auto;
+                 box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+                 border-radius:10px;
+             }
+
+             #text {
+                 position:absolute;
+                 top:8px;
+                 left:530px;
+                 width:30px;
+                 height:50px;
+                 margin:auto auto auto auto;
+                 font-size:22px;
+                 color: #000000;
+             }
+
+             div.outerBorder {
+                 position:relative;
+                 top:400px;
+                 width:600px;
+                 height:44px;
+                 margin:auto auto auto auto;
+                 border:8px solid rgba(0,0,0,0.1);
+                 background: rgb(252,252,252); /* Old browsers */
+                 background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+                 background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+                 background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+                 background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+                 background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+                 border-radius:72px;
+                 box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+             }
+             
+
+             
+             #config {
+                 float: left;
+                 width: 400px;
+                 height: 600px;
+             }
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+            <div id="loadingBar">
+              <div class="outerBorder">
+                <div id="text">0%</div>
+                <div id="border">
+                  <div id="bar"></div>
+                </div>
+              </div>
+            </div>
+        
+        
+            <div id="config"></div>
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "font": {"color": "white"}, "id": "@realDonaldTrump:", "label": "@realDonaldTrump:", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@WhiteHouse:", "label": "@WhiteHouse:", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@FoxNews", "label": "@FoxNews", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@foxandfriends", "label": "@foxandfriends", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@BarackObama", "label": "@BarackObama", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@ApprenticeNBC", "label": "@ApprenticeNBC", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@TeamTrump:", "label": "@TeamTrump:", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@CNN", "label": "@CNN", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@GOPChairwoman:", "label": "@GOPChairwoman:", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@MittRomney", "label": "@MittRomney", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@seanhannity", "label": "@seanhannity", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@realDonaldTrump\"\"\"", "label": "@realDonaldTrump\"\"\"", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@DanScavino:", "label": "@DanScavino:", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@nytimes", "label": "@nytimes", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@Jim_Jordan:", "label": "@Jim_Jordan:", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@IvankaTrump", "label": "@IvankaTrump", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@realDonaldTrump.", "label": "@realDonaldTrump.", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@GOP:", "label": "@GOP:", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@megynkelly", "label": "@megynkelly", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@BreitbartNews", "label": "@BreitbartNews", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@BarackObama\u0027s", "label": "@BarackObama\u0027s", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@DonaldJTrumpJr:", "label": "@DonaldJTrumpJr:", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@Scavino45:", "label": "@Scavino45:", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@POTUS", "label": "@POTUS", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@GreggJarrett:", "label": "@GreggJarrett:", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@oreillyfactor", "label": "@oreillyfactor", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@IvankaTrump:", "label": "@IvankaTrump:", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@realdonaldtrump", "label": "@realdonaldtrump", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@realDonaldTrump\u0027s", "label": "@realDonaldTrump\u0027s", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@WhiteHouse", "label": "@WhiteHouse", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@realDonaldTrump\"\"", "label": "@realDonaldTrump\"\"", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@FoxNews.", "label": "@FoxNews.", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@TomFitton:", "label": "@TomFitton:", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@EricTrump:", "label": "@EricTrump:", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@Macys", "label": "@Macys", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@paulsperry_:", "label": "@paulsperry_:", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@OANN", "label": "@OANN", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@TrumpDoral", "label": "@TrumpDoral", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@CelebApprentice", "label": "@CelebApprentice", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@GOP", "label": "@GOP", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@marklevinshow:", "label": "@marklevinshow:", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@realDonaldTrump,", "label": "@realDonaldTrump,", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@LindseyGrahamSC:", "label": "@LindseyGrahamSC:", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@RepMarkMeadows:", "label": "@RepMarkMeadows:", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@FLOTUS", "label": "@FLOTUS", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@", "label": "@", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@DonaldJTrumpJr", "label": "@DonaldJTrumpJr", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@TrumpChicago", "label": "@TrumpChicago", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@EricTrump", "label": "@EricTrump", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "@TrumpWarRoom:", "label": "@TrumpWarRoom:", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#Trump2016", "label": "#Trump2016", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#MAGA", "label": "#MAGA", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#MakeAmericaGreatAgain", "label": "#MakeAmericaGreatAgain", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#CelebApprentice", "label": "#CelebApprentice", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#Trump2016\"\"\"", "label": "#Trump2016\"\"\"", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#1", "label": "#1", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#CelebrityApprentice", "label": "#CelebrityApprentice", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#MakeAmericaGreatAgain\"\"\"", "label": "#MakeAmericaGreatAgain\"\"\"", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#AmericaFirst", "label": "#AmericaFirst", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#KAG2020", "label": "#KAG2020", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#Trump2016\"\"", "label": "#Trump2016\"\"", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#Trump", "label": "#Trump", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#VoteTrump", "label": "#VoteTrump", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#TimeToGetTough", "label": "#TimeToGetTough", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#DrainTheSwamp", "label": "#DrainTheSwamp", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#BigLeagueTruth", "label": "#BigLeagueTruth", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#COVID19", "label": "#COVID19", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#ImWithYou", "label": "#ImWithYou", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#MakeAmericaGreatAgain!", "label": "#MakeAmericaGreatAgain!", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#CelebApprentice\"\"\"", "label": "#CelebApprentice\"\"\"", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#trumpvlog", "label": "#trumpvlog", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#FITN", "label": "#FITN", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#TBT", "label": "#TBT", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#Debate", "label": "#Debate", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#MAGA\ud83c\uddfa\ud83c\uddf8", "label": "#MAGA\ud83c\uddfa\ud83c\uddf8", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#USMCA", "label": "#USMCA", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#CrookedHillary", "label": "#CrookedHillary", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#CelebrityApprentice\"\"\"", "label": "#CelebrityApprentice\"\"\"", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#DemDebate", "label": "#DemDebate", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#trump2016\"\"\"", "label": "#trump2016\"\"\"", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#MAGA!", "label": "#MAGA!", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#VPDebate", "label": "#VPDebate", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#TrumpTrain", "label": "#TrumpTrain", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#GOPDebate", "label": "#GOPDebate", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#USA\ud83c\uddfa\ud83c\uddf8", "label": "#USA\ud83c\uddfa\ud83c\uddf8", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#TimeToGetTough\"", "label": "#TimeToGetTough\"", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#Trump2016\"", "label": "#Trump2016\"", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#TrumpForPresident\"\"\"", "label": "#TrumpForPresident\"\"\"", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#PaycheckProtectionProgram", "label": "#PaycheckProtectionProgram", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#TrumpPence16", "label": "#TrumpPence16", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#GOP", "label": "#GOP", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#Debates2016", "label": "#Debates2016", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#TRUMP", "label": "#TRUMP", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#LESM", "label": "#LESM", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#coronavirus", "label": "#coronavirus", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#TrumpVlog", "label": "#TrumpVlog", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#Oscars", "label": "#Oscars", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#2016\"\"\"", "label": "#2016\"\"\"", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#IACaucus", "label": "#IACaucus", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "#USA", "label": "#USA", "shape": "dot"}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "DonaldTrump", "label": "DonaldTrump", "shape": "dot"}]);
+                  edges = new vis.DataSet([{"from": "@realDonaldTrump:", "to": "DonaldTrump"}, {"from": "@WhiteHouse:", "to": "DonaldTrump"}, {"from": "@FoxNews", "to": "DonaldTrump"}, {"from": "@foxandfriends", "to": "DonaldTrump"}, {"from": "@BarackObama", "to": "DonaldTrump"}, {"from": "@ApprenticeNBC", "to": "DonaldTrump"}, {"from": "@TeamTrump:", "to": "DonaldTrump"}, {"from": "@CNN", "to": "DonaldTrump"}, {"from": "@GOPChairwoman:", "to": "DonaldTrump"}, {"from": "@MittRomney", "to": "DonaldTrump"}, {"from": "@seanhannity", "to": "DonaldTrump"}, {"from": "@realDonaldTrump\"\"\"", "to": "DonaldTrump"}, {"from": "@DanScavino:", "to": "DonaldTrump"}, {"from": "@nytimes", "to": "DonaldTrump"}, {"from": "@Jim_Jordan:", "to": "DonaldTrump"}, {"from": "@IvankaTrump", "to": "DonaldTrump"}, {"from": "@realDonaldTrump.", "to": "DonaldTrump"}, {"from": "@GOP:", "to": "DonaldTrump"}, {"from": "@megynkelly", "to": "DonaldTrump"}, {"from": "@BreitbartNews", "to": "DonaldTrump"}, {"from": "@BarackObama\u0027s", "to": "DonaldTrump"}, {"from": "@DonaldJTrumpJr:", "to": "DonaldTrump"}, {"from": "@Scavino45:", "to": "DonaldTrump"}, {"from": "@POTUS", "to": "DonaldTrump"}, {"from": "@GreggJarrett:", "to": "DonaldTrump"}, {"from": "@oreillyfactor", "to": "DonaldTrump"}, {"from": "@IvankaTrump:", "to": "DonaldTrump"}, {"from": "@realdonaldtrump", "to": "DonaldTrump"}, {"from": "@realDonaldTrump\u0027s", "to": "DonaldTrump"}, {"from": "@WhiteHouse", "to": "DonaldTrump"}, {"from": "@realDonaldTrump\"\"", "to": "DonaldTrump"}, {"from": "@FoxNews.", "to": "DonaldTrump"}, {"from": "@TomFitton:", "to": "DonaldTrump"}, {"from": "@EricTrump:", "to": "DonaldTrump"}, {"from": "@Macys", "to": "DonaldTrump"}, {"from": "@paulsperry_:", "to": "DonaldTrump"}, {"from": "@OANN", "to": "DonaldTrump"}, {"from": "@TrumpDoral", "to": "DonaldTrump"}, {"from": "@CelebApprentice", "to": "DonaldTrump"}, {"from": "@GOP", "to": "DonaldTrump"}, {"from": "@marklevinshow:", "to": "DonaldTrump"}, {"from": "@realDonaldTrump,", "to": "DonaldTrump"}, {"from": "@LindseyGrahamSC:", "to": "DonaldTrump"}, {"from": "@RepMarkMeadows:", "to": "DonaldTrump"}, {"from": "@FLOTUS", "to": "DonaldTrump"}, {"from": "@", "to": "DonaldTrump"}, {"from": "@DonaldJTrumpJr", "to": "DonaldTrump"}, {"from": "@TrumpChicago", "to": "DonaldTrump"}, {"from": "@EricTrump", "to": "DonaldTrump"}, {"from": "@TrumpWarRoom:", "to": "DonaldTrump"}, {"from": "#Trump2016", "to": "DonaldTrump"}, {"from": "#MAGA", "to": "DonaldTrump"}, {"from": "#MakeAmericaGreatAgain", "to": "DonaldTrump"}, {"from": "#CelebApprentice", "to": "DonaldTrump"}, {"from": "#Trump2016\"\"\"", "to": "DonaldTrump"}, {"from": "#1", "to": "DonaldTrump"}, {"from": "#CelebrityApprentice", "to": "DonaldTrump"}, {"from": "#MakeAmericaGreatAgain\"\"\"", "to": "DonaldTrump"}, {"from": "#AmericaFirst", "to": "DonaldTrump"}, {"from": "#KAG2020", "to": "DonaldTrump"}, {"from": "#Trump2016\"\"", "to": "DonaldTrump"}, {"from": "#Trump", "to": "DonaldTrump"}, {"from": "#VoteTrump", "to": "DonaldTrump"}, {"from": "#TimeToGetTough", "to": "DonaldTrump"}, {"from": "#DrainTheSwamp", "to": "DonaldTrump"}, {"from": "#BigLeagueTruth", "to": "DonaldTrump"}, {"from": "#COVID19", "to": "DonaldTrump"}, {"from": "#ImWithYou", "to": "DonaldTrump"}, {"from": "#MakeAmericaGreatAgain!", "to": "DonaldTrump"}, {"from": "#CelebApprentice\"\"\"", "to": "DonaldTrump"}, {"from": "#trumpvlog", "to": "DonaldTrump"}, {"from": "#FITN", "to": "DonaldTrump"}, {"from": "#TBT", "to": "DonaldTrump"}, {"from": "#Debate", "to": "DonaldTrump"}, {"from": "#MAGA\ud83c\uddfa\ud83c\uddf8", "to": "DonaldTrump"}, {"from": "#USMCA", "to": "DonaldTrump"}, {"from": "#CrookedHillary", "to": "DonaldTrump"}, {"from": "#CelebrityApprentice\"\"\"", "to": "DonaldTrump"}, {"from": "#DemDebate", "to": "DonaldTrump"}, {"from": "#trump2016\"\"\"", "to": "DonaldTrump"}, {"from": "#MAGA!", "to": "DonaldTrump"}, {"from": "#VPDebate", "to": "DonaldTrump"}, {"from": "#TrumpTrain", "to": "DonaldTrump"}, {"from": "#GOPDebate", "to": "DonaldTrump"}, {"from": "#USA\ud83c\uddfa\ud83c\uddf8", "to": "DonaldTrump"}, {"from": "#TimeToGetTough\"", "to": "DonaldTrump"}, {"from": "#Trump2016\"", "to": "DonaldTrump"}, {"from": "#TrumpForPresident\"\"\"", "to": "DonaldTrump"}, {"from": "#PaycheckProtectionProgram", "to": "DonaldTrump"}, {"from": "#TrumpPence16", "to": "DonaldTrump"}, {"from": "#GOP", "to": "DonaldTrump"}, {"from": "#Debates2016", "to": "DonaldTrump"}, {"from": "#TRUMP", "to": "DonaldTrump"}, {"from": "#LESM", "to": "DonaldTrump"}, {"from": "#coronavirus", "to": "DonaldTrump"}, {"from": "#TrumpVlog", "to": "DonaldTrump"}, {"from": "#Oscars", "to": "DonaldTrump"}, {"from": "#2016\"\"\"", "to": "DonaldTrump"}, {"from": "#IACaucus", "to": "DonaldTrump"}, {"from": "#USA", "to": "DonaldTrump"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": true,
+        "filter": [
+            "physics"
+        ]
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+                  // if this network requires displaying the configure window,
+                  // put it in its div
+                  options.configure["container"] = document.getElementById("config");
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+                      network.on("stabilizationProgress", function(params) {
+                          document.getElementById('loadingBar').removeAttribute("style");
+                          var maxWidth = 496;
+                          var minWidth = 20;
+                          var widthFactor = params.iterations/params.total;
+                          var width = Math.max(minWidth,maxWidth * widthFactor);
+                          document.getElementById('bar').style.width = width + 'px';
+                          document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+                      });
+                      network.once("stabilizationIterationsDone", function() {
+                          document.getElementById('text').innerHTML = '100%';
+                          document.getElementById('bar').style.width = '496px';
+                          document.getElementById('loadingBar').style.opacity = 0;
+                          // really clean the dom element
+                          setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+                      });
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
